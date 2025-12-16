@@ -27,7 +27,9 @@ import {
   Plus,
   User,
   Vote,
-  Users as PeopleIcon
+  Users as PeopleIcon,
+  Landmark,
+  Users as NeighborhoodIcon
 } from 'lucide-react';
 
 function App() {
@@ -123,6 +125,64 @@ function App() {
         image: "https://images.unsplash.com/photo-1587614382346-4ec70e388b28?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
         description: "পশ্চিম পাড়ার কেন্দ্রীয় মসজিদ",
         imam: "মাওলানা মোহাম্মদ আলী"
+      }
+    ],
+
+    // মোহল্লার তালিকা - ৬টি মোহল্লা
+    neighborhoods: [
+      {
+        id: 1,
+        name: "মধ্য গুয়াতা",
+        households: "১২০",
+        population: "৬০০",
+        chairman: "মোঃ আব্দুল করিম",
+        contact: "০১৭১২-৩৪৫৬৭৮",
+        description: "গ্রামের কেন্দ্রস্থল, সবচেয়ে পুরনো ও প্রধান মোহল্লা"
+      },
+      {
+        id: 2,
+        name: "পূর্ব গুয়াতা",
+        households: "৯০",
+        population: "৪৫০",
+        chairman: "মোঃ রফিকুল ইসলাম",
+        contact: "০১৯১২-৯৮৭৬৫৪",
+        description: "কৃষিজমি ও পুকুরের জন্য পরিচিত, সবুজ পরিবেশ"
+      },
+      {
+        id: 3,
+        name: "পশ্চিম গুয়াতা",
+        households: "১০০",
+        population: "৫০০",
+        chairman: "মোঃ আলমগীর হোসেন",
+        contact: "০১৮৭৬-৫৪৩২১০",
+        description: "আধুনিক ঘরবাড়ি ও ব্যবসা প্রতিষ্ঠানের জন্য বিখ্যাত"
+      },
+      {
+        id: 4,
+        name: "উত্তর গুয়াতা",
+        households: "৮৫",
+        population: "৪২৫",
+        chairman: "মোঃ শফিকুল ইসলাম",
+        contact: "০১৭৩৪-৫৬৭৮৯০",
+        description: "হাইস্কুল সংলগ্ন এলাকা, শিক্ষিত পরিবারের বসবাস"
+      },
+      {
+        id: 5,
+        name: "দক্ষিণ গুয়াতা",
+        households: "৭৫",
+        population: "৩৭৫",
+        chairman: "মোঃ জাহাঙ্গীর আলম",
+        contact: "০১৯৮৭-৬৫৪৩২১",
+        description: "নদীর পাড়ে অবস্থিত, মাছ ধরা ও নৌকা চলাচল"
+      },
+      {
+        id: 6,
+        name: "নতুন গুয়াতা",
+        households: "৩০",
+        population: "১৫০",
+        chairman: "মোঃ সোহেল রানা",
+        contact: "০১৭৯৮-৭৬৫৪৩২",
+        description: "সাম্প্রতিক সময়ে গড়ে উঠা নতুন আবাসিক এলাকা"
       }
     ],
     
@@ -261,6 +321,13 @@ function App() {
             mosque.id === id ? { ...mosque, [field]: value } : mosque
           )
         };
+      } else if (section === 'neighborhoods') {
+        return {
+          ...prev,
+          neighborhoods: prev.neighborhoods.map(neighborhood => 
+            neighborhood.id === id ? { ...neighborhood, [field]: value } : neighborhood
+          )
+        };
       } else if (section === 'programs') {
         return {
           ...prev,
@@ -343,6 +410,20 @@ function App() {
         ...prev,
         mosques: [...prev.mosques, newItem]
       }));
+    } else if (section === 'neighborhoods') {
+      const newItem = {
+        id: newId,
+        name: "নতুন মোহল্লা",
+        households: "৫০",
+        population: "২৫০",
+        chairman: "চেয়ারম্যানের নাম",
+        contact: "০১৭১২-৩৪৫৬৭৮",
+        description: "বর্ণনা যোগ করুন"
+      };
+      setGuataData(prev => ({
+        ...prev,
+        neighborhoods: [...prev.neighborhoods, newItem]
+      }));
     } else if (section === 'programs') {
       const newItem = {
         id: newId,
@@ -405,6 +486,7 @@ function App() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center space-x-3 cursor-pointer"
             onClick={() => scrollToSection('home')}
+            style={{ cursor: 'pointer' }}
           >
             <img 
               src={guataData.images.profilePic} 
@@ -418,8 +500,8 @@ function App() {
           </motion.div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
-            {['home', 'population', 'notable-persons', 'scenery', 'programs', 'schools', 'mosques', 'contact'].map((item) => (
+          <div className="hidden md:flex space-x-6">
+            {['home', 'population', 'neighborhoods', 'notable-persons', 'scenery', 'programs', 'schools', 'mosques', 'contact'].map((item) => (
               <button
                 key={item}
                 onClick={() => scrollToSection(item)}
@@ -428,9 +510,11 @@ function App() {
                     ? 'text-green-600 border-b-2 border-green-600' 
                     : 'text-gray-600 hover:text-green-500'
                 }`}
+                style={{ cursor: 'pointer' }}
               >
                 {item === 'home' && 'হোম'}
                 {item === 'population' && 'জনসংখ্যা'}
+                {item === 'neighborhoods' && 'মোহল্লা'}
                 {item === 'notable-persons' && 'কৃতি সন্তান'}
                 {item === 'scenery' && 'সুন্দর দৃশ্য'}
                 {item === 'programs' && 'প্রোগ্রাম'}
@@ -444,6 +528,7 @@ function App() {
               className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
                 isEditing ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
               }`}
+              style={{ cursor: 'pointer' }}
             >
               <Edit size={18} />
               {isEditing ? 'এডিটিং মোড' : 'এডিট করুন'}
@@ -454,6 +539,7 @@ function App() {
           <button 
             className="md:hidden text-gray-700"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            style={{ cursor: 'pointer' }}
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -468,14 +554,16 @@ function App() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden mt-4 space-y-3"
             >
-              {['home', 'population', 'notable-persons', 'scenery', 'programs', 'schools', 'mosques', 'contact'].map((item) => (
+              {['home', 'population', 'neighborhoods', 'notable-persons', 'scenery', 'programs', 'schools', 'mosques', 'contact'].map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item)}
-                  className="block w-full text-left p-2 rounded-lg hover:bg-green-50"
+                  className="block w-full text-left p-2 rounded-lg hover:bg-green-50 transition-colors"
+                  style={{ cursor: 'pointer' }}
                 >
                   {item === 'home' && 'হোম'}
                   {item === 'population' && 'জনসংখ্যা'}
+                  {item === 'neighborhoods' && 'মোহল্লা'}
                   {item === 'notable-persons' && 'কৃতি সন্তান'}
                   {item === 'scenery' && 'সুন্দর দৃশ্য'}
                   {item === 'programs' && 'প্রোগ্রাম'}
@@ -489,6 +577,7 @@ function App() {
                 className={`flex items-center gap-2 w-full p-2 rounded-lg ${
                   isEditing ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
                 }`}
+                style={{ cursor: 'pointer' }}
               >
                 <Edit size={18} />
                 {isEditing ? 'এডিটিং মোড' : 'এডিট করুন'}
@@ -506,7 +595,7 @@ function App() {
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="relative h-[80vh] overflow-hidden"
+        className="relative h-[70vh] md:h-[80vh] overflow-hidden"
       >
         <div 
           className="absolute inset-0 bg-cover bg-center"
@@ -520,7 +609,7 @@ function App() {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="text-5xl md:text-7xl font-bold mb-4 text-center"
+            className="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 text-center"
           >
             গুয়াতা গ্রাম
           </motion.h1>
@@ -529,7 +618,7 @@ function App() {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-xl md:text-2xl mb-8 text-center"
+            className="text-lg md:text-xl lg:text-2xl mb-8 text-center"
           >
             নওগাঁ জেলা, রাজশাহী বিভাগ
           </motion.p>
@@ -538,17 +627,19 @@ function App() {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="flex flex-wrap justify-center gap-4"
+            className="flex flex-col sm:flex-row flex-wrap justify-center gap-4"
           >
             <button 
               onClick={() => scrollToSection('population')}
-              className="px-8 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transition-colors shadow-lg"
+              className="px-6 py-3 bg-green-600 text-white rounded-full font-semibold hover:bg-green-700 transition-colors shadow-lg w-full sm:w-auto"
+              style={{ cursor: 'pointer' }}
             >
               জনসংখ্যা দেখুন
             </button>
             <button 
               onClick={() => scrollToSection('notable-persons')}
-              className="px-8 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors shadow-lg"
+              className="px-6 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-colors shadow-lg w-full sm:w-auto"
+              style={{ cursor: 'pointer' }}
             >
               কৃতি সন্তান
             </button>
@@ -556,7 +647,8 @@ function App() {
               href={guataData.facebookPage}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors shadow-lg flex items-center gap-2"
+              className="px-6 py-3 bg-purple-600 text-white rounded-full font-semibold hover:bg-purple-700 transition-colors shadow-lg flex items-center justify-center gap-2 w-full sm:w-auto"
+              style={{ cursor: 'pointer' }}
             >
               <Facebook size={20} />
               Facebook পেজ
@@ -578,7 +670,7 @@ function App() {
 
   // Population Section
   const PopulationSection = () => (
-    <section id="population" className="py-20 bg-gray-50">
+    <section id="population" className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -586,33 +678,33 @@ function App() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">জনসংখ্যা ও ভোটার তথ্য</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">জনসংখ্যা ও ভোটার তথ্য</h2>
           <p className="text-gray-600">গুয়াতা গ্রামের সাম্প্রতিক জনসংখ্যা পরিসংখ্যান</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12">
           {/* Total Population */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white rounded-2xl p-6 shadow-lg border border-green-100"
+            className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-green-100"
           >
             <div className="flex items-center mb-4">
               <div className="p-3 bg-green-100 rounded-xl mr-4">
-                <PeopleIcon className="w-8 h-8 text-green-600" />
+                <PeopleIcon className="w-6 h-6 md:w-8 md:h-8 text-green-600" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-800">মোট জনসংখ্যা</h3>
+                <h3 className="text-base md:text-lg font-bold text-gray-800">মোট জনসংখ্যা</h3>
                 {isEditing ? (
                   <input
                     type="text"
                     value={guataData.populationInfo.totalPopulation}
                     onChange={(e) => handleEditField('populationInfo', null, 'totalPopulation', e.target.value)}
-                    className="text-3xl font-bold text-green-600 bg-gray-50 p-2 rounded w-full mt-2"
+                    className="text-2xl md:text-3xl font-bold text-green-600 bg-gray-50 p-2 rounded w-full mt-2"
                   />
                 ) : (
-                  <p className="text-3xl font-bold text-green-600">{guataData.populationInfo.totalPopulation} জন</p>
+                  <p className="text-2xl md:text-3xl font-bold text-green-600">{guataData.populationInfo.totalPopulation} জন</p>
                 )}
               </div>
             </div>
@@ -652,23 +744,23 @@ function App() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-2xl p-6 shadow-lg border border-blue-100"
+            className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-blue-100"
           >
             <div className="flex items-center mb-4">
               <div className="p-3 bg-blue-100 rounded-xl mr-4">
-                <Vote className="w-8 h-8 text-blue-600" />
+                <Vote className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-800">মোট ভোটার</h3>
+                <h3 className="text-base md:text-lg font-bold text-gray-800">মোট ভোটার</h3>
                 {isEditing ? (
                   <input
                     type="text"
                     value={guataData.populationInfo.totalVoters}
                     onChange={(e) => handleEditField('populationInfo', null, 'totalVoters', e.target.value)}
-                    className="text-3xl font-bold text-blue-600 bg-gray-50 p-2 rounded w-full mt-2"
+                    className="text-2xl md:text-3xl font-bold text-blue-600 bg-gray-50 p-2 rounded w-full mt-2"
                   />
                 ) : (
-                  <p className="text-3xl font-bold text-blue-600">{guataData.populationInfo.totalVoters} জন</p>
+                  <p className="text-2xl md:text-3xl font-bold text-blue-600">{guataData.populationInfo.totalVoters} জন</p>
                 )}
               </div>
             </div>
@@ -708,23 +800,23 @@ function App() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-2xl p-6 shadow-lg border border-purple-100"
+            className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-purple-100"
           >
             <div className="flex items-center mb-4">
               <div className="p-3 bg-purple-100 rounded-xl mr-4">
-                <Home className="w-8 h-8 text-purple-600" />
+                <Home className="w-6 h-6 md:w-8 md:h-8 text-purple-600" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-800">মোট পরিবার</h3>
+                <h3 className="text-base md:text-lg font-bold text-gray-800">মোট পরিবার</h3>
                 {isEditing ? (
                   <input
                     type="text"
                     value={guataData.populationInfo.households}
                     onChange={(e) => handleEditField('populationInfo', null, 'households', e.target.value)}
-                    className="text-3xl font-bold text-purple-600 bg-gray-50 p-2 rounded w-full mt-2"
+                    className="text-2xl md:text-3xl font-bold text-purple-600 bg-gray-50 p-2 rounded w-full mt-2"
                   />
                 ) : (
-                  <p className="text-3xl font-bold text-purple-600">{guataData.populationInfo.households} টি</p>
+                  <p className="text-2xl md:text-3xl font-bold text-purple-600">{guataData.populationInfo.households} টি</p>
                 )}
               </div>
             </div>
@@ -735,10 +827,10 @@ function App() {
                   type="text"
                   value={guataData.populationInfo.averageFamilySize}
                   onChange={(e) => handleEditField('populationInfo', null, 'averageFamilySize', e.target.value)}
-                  className="font-bold text-xl bg-gray-50 p-2 rounded w-full mt-2"
+                  className="font-bold text-lg md:text-xl bg-gray-50 p-2 rounded w-full mt-2"
                 />
               ) : (
-                <p className="font-bold text-xl">{guataData.populationInfo.averageFamilySize} জন</p>
+                <p className="font-bold text-lg md:text-xl">{guataData.populationInfo.averageFamilySize} জন</p>
               )}
             </div>
           </motion.div>
@@ -749,25 +841,25 @@ function App() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl p-6 shadow-lg"
+            className="bg-gradient-to-r from-green-500 to-blue-500 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg"
           >
             <div className="text-white">
-              <h3 className="text-lg font-bold mb-4">পরিসংখ্যান</h3>
-              <div className="space-y-3">
+              <h3 className="text-base md:text-lg font-bold mb-4">পরিসংখ্যান</h3>
+              <div className="space-y-2 md:space-y-3">
                 <div className="flex justify-between">
-                  <span>ভোটার শতাংশ</span>
+                  <span className="text-sm md:text-base">ভোটার শতাংশ</span>
                   <span className="font-bold">
                     {Math.round((parseInt(guataData.populationInfo.totalVoters) / parseInt(guataData.populationInfo.totalPopulation)) * 100)}%
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>লিঙ্গ অনুপাত</span>
+                  <span className="text-sm md:text-base">লিঙ্গ অনুপাত</span>
                   <span className="font-bold">
                     {Math.round((parseInt(guataData.populationInfo.malePopulation) / parseInt(guataData.populationInfo.femalePopulation)) * 100) / 100} : ১
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>জনসংখ্যা ঘনত্ব</span>
+                  <span className="text-sm md:text-base">জনসংখ্যা ঘনত্ব</span>
                   <span className="font-bold">প্রতি বর্গকিমি ৮০০</span>
                 </div>
               </div>
@@ -775,9 +867,9 @@ function App() {
           </motion.div>
         </div>
 
-        <div className="bg-white rounded-2xl p-8 shadow-lg">
-          <h3 className="text-2xl font-bold text-gray-800 mb-6">জনসংখ্যা বিশ্লেষণ</h3>
-          <div className="grid md:grid-cols-2 gap-8">
+        <div className="bg-white rounded-xl md:rounded-2xl p-6 md:p-8 shadow-lg">
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">জনসংখ্যা বিশ্লেষণ</h3>
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             <div>
               <h4 className="text-lg font-bold mb-4 text-gray-700">জনসংখ্যা কাঠামো</h4>
               <ul className="space-y-3 text-gray-600">
@@ -828,9 +920,9 @@ function App() {
     </section>
   );
 
-  // Notable Persons Section
-  const NotablePersonsSection = () => (
-    <section id="notable-persons" className="py-20">
+  // Neighborhoods Section
+  const NeighborhoodsSection = () => (
+    <section id="neighborhoods" className="py-16 md:py-20">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -838,7 +930,186 @@ function App() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">গুয়াতা গ্রামের কৃতি সন্তান</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">গুয়াতা গ্রামের মোহল্লাসমূহ</h2>
+          <p className="text-gray-600">গ্রামের ৬টি মোহল্লার বিস্তারিত তথ্য</p>
+        </motion.div>
+
+        {/* Add New Neighborhood Button (Edit Mode) */}
+        {isEditing && (
+          <div className="text-center mb-8">
+            <button
+              onClick={() => addNewItem('neighborhoods')}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors"
+              style={{ cursor: 'pointer' }}
+            >
+              <Plus size={20} />
+              নতুন মোহল্লা যোগ করুন
+            </button>
+          </div>
+        )}
+
+        {/* Neighborhoods Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {guataData.neighborhoods.map((neighborhood, index) => (
+            <motion.div
+              key={neighborhood.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="bg-white rounded-xl overflow-hidden shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow duration-300"
+            >
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex items-center">
+                    <div className="p-3 bg-purple-100 rounded-xl mr-4">
+                      <NeighborhoodIcon className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-800">{neighborhood.name}</h3>
+                      <span className="text-sm text-gray-500">মোহল্লা</span>
+                    </div>
+                  </div>
+                  {isEditing && (
+                    <button
+                      onClick={() => removeItem('neighborhoods', neighborhood.id)}
+                      className="p-2 text-red-500 hover:text-red-600"
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <X size={20} />
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <p className="text-gray-600 text-sm">পরিবার</p>
+                    <p className="font-bold text-lg">{neighborhood.households} টি</p>
+                  </div>
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <p className="text-gray-600 text-sm">জনসংখ্যা</p>
+                    <p className="font-bold text-lg">{neighborhood.population} জন</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-gray-600 text-sm mb-1">চেয়ারম্যান</p>
+                    <p className="font-medium text-gray-800">{neighborhood.chairman}</p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-gray-600 text-sm mb-1">যোগাযোগ</p>
+                    <p className="font-medium text-gray-800">{neighborhood.contact}</p>
+                  </div>
+
+                  <div>
+                    <p className="text-gray-600 text-sm mb-1">বর্ণনা</p>
+                    <p className="text-gray-700">{neighborhood.description}</p>
+                  </div>
+                </div>
+
+                {/* Editable Fields in Edit Mode */}
+                {isEditing && (
+                  <div className="mt-6 space-y-3 p-4 bg-gray-50 rounded-lg">
+                    <input
+                      type="text"
+                      value={neighborhood.name}
+                      onChange={(e) => handleEditField('neighborhoods', neighborhood.id, 'name', e.target.value)}
+                      className="w-full p-2 border rounded"
+                      placeholder="মোহল্লার নাম"
+                    />
+                    <div className="grid grid-cols-2 gap-4">
+                      <input
+                        type="text"
+                        value={neighborhood.households}
+                        onChange={(e) => handleEditField('neighborhoods', neighborhood.id, 'households', e.target.value)}
+                        className="p-2 border rounded"
+                        placeholder="পরিবার সংখ্যা"
+                      />
+                      <input
+                        type="text"
+                        value={neighborhood.population}
+                        onChange={(e) => handleEditField('neighborhoods', neighborhood.id, 'population', e.target.value)}
+                        className="p-2 border rounded"
+                        placeholder="জনসংখ্যা"
+                      />
+                    </div>
+                    <input
+                      type="text"
+                      value={neighborhood.chairman}
+                      onChange={(e) => handleEditField('neighborhoods', neighborhood.id, 'chairman', e.target.value)}
+                      className="w-full p-2 border rounded"
+                      placeholder="চেয়ারম্যানের নাম"
+                    />
+                    <input
+                      type="text"
+                      value={neighborhood.contact}
+                      onChange={(e) => handleEditField('neighborhoods', neighborhood.id, 'contact', e.target.value)}
+                      className="w-full p-2 border rounded"
+                      placeholder="যোগাযোগ নম্বর"
+                    />
+                    <textarea
+                      value={neighborhood.description}
+                      onChange={(e) => handleEditField('neighborhoods', neighborhood.id, 'description', e.target.value)}
+                      className="w-full p-2 border rounded"
+                      placeholder="বর্ণনা"
+                      rows="3"
+                    />
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Summary Statistics */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+          className="mt-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 md:p-8 text-white"
+        >
+          <h3 className="text-2xl font-bold mb-6">মোহল্লা সমন্বিত পরিসংখ্যান</h3>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="text-center">
+              <p className="text-3xl font-bold">{guataData.neighborhoods.length} টি</p>
+              <p className="text-sm opacity-90">মোট মোহল্লা</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-bold">
+                {guataData.neighborhoods.reduce((total, n) => total + parseInt(n.households), 0)} টি
+              </p>
+              <p className="text-sm opacity-90">মোট পরিবার</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-bold">
+                {guataData.neighborhoods.reduce((total, n) => total + parseInt(n.population), 0)} জন
+              </p>
+              <p className="text-sm opacity-90">মোট জনসংখ্যা</p>
+            </div>
+            <div className="text-center">
+              <p className="text-3xl font-bold">৬ জন</p>
+              <p className="text-sm opacity-90">মোট চেয়ারম্যান</p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+
+  // Notable Persons Section
+  const NotablePersonsSection = () => (
+    <section id="notable-persons" className="py-16 md:py-20 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">গুয়াতা গ্রামের কৃতি সন্তান</h2>
           <p className="text-gray-600">যারা গ্রামের নাম উজ্জ্বল করেছেন তাদের পরিচিতি</p>
         </motion.div>
 
@@ -848,6 +1119,7 @@ function App() {
             <button
               onClick={() => addNewItem('notablePersons')}
               className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors"
+              style={{ cursor: 'pointer' }}
             >
               <Plus size={20} />
               নতুন কৃতি সন্তান যোগ করুন
@@ -856,7 +1128,7 @@ function App() {
         )}
 
         {/* Notable Persons Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {guataData.notablePersons.map((person, index) => (
             <motion.div
               key={person.id}
@@ -864,9 +1136,9 @@ function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-2xl overflow-hidden shadow-xl border border-gray-100"
+              className="bg-white rounded-xl overflow-hidden shadow-xl border border-gray-100"
             >
-              <div className="relative h-64">
+              <div className="relative h-56 md:h-64">
                 <img 
                   src={person.image} 
                   alt={person.name}
@@ -877,17 +1149,18 @@ function App() {
                   <button
                     onClick={() => removeItem('notablePersons', person.id)}
                     className="absolute top-4 right-4 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 z-10"
+                    style={{ cursor: 'pointer' }}
                   >
                     <X size={16} />
                   </button>
                 )}
                 <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <h3 className="text-xl font-bold">{person.name}</h3>
+                  <h3 className="text-lg md:text-xl font-bold">{person.name}</h3>
                   <p className="text-sm opacity-90">{person.designation}</p>
                 </div>
               </div>
               
-              <div className="p-6">
+              <div className="p-4 md:p-6">
                 <div className="mb-4">
                   <div className="flex items-center text-gray-600 mb-2">
                     <Award className="w-4 h-4 mr-2" />
@@ -896,7 +1169,7 @@ function App() {
                   <p className="text-gray-800">{person.achievement}</p>
                 </div>
 
-                <p className="text-gray-600 mb-6">{person.description}</p>
+                <p className="text-gray-600 mb-6 text-sm md:text-base">{person.description}</p>
 
                 {person.facebookLink && (
                   <a 
@@ -967,7 +1240,7 @@ function App() {
 
   // Scenery Section with Categories
   const ScenerySection = () => (
-    <section id="scenery" className="py-20 bg-gray-50">
+    <section id="scenery" className="py-16 md:py-20">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -975,21 +1248,22 @@ function App() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">সুন্দর গ্রাম্য দৃশ্য</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">সুন্দর গ্রাম্য দৃশ্য</h2>
           <p className="text-gray-600">গুয়াতা গ্রামের অপরূপ প্রাকৃতিক ও মনোরম দৃশ্যাবলী</p>
         </motion.div>
 
         {/* Category Filters */}
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
           {['all', 'nature', 'agriculture', 'infrastructure', 'lifestyle'].map((category) => (
             <button
               key={category}
               onClick={() => setActiveSceneryCategory(category)}
-              className={`px-6 py-2 rounded-full font-medium transition-all ${
+              className={`px-4 py-2 rounded-full font-medium transition-all text-sm md:text-base ${
                 activeSceneryCategory === category
                   ? 'bg-green-600 text-white'
                   : 'bg-white text-gray-700 hover:bg-green-50'
               }`}
+              style={{ cursor: 'pointer' }}
             >
               {category === 'all' && 'সব'}
               {category === 'nature' && 'প্রকৃতি'}
@@ -1006,6 +1280,7 @@ function App() {
             <button
               onClick={() => addNewItem('scenery')}
               className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors"
+              style={{ cursor: 'pointer' }}
             >
               <Plus size={20} />
               নতুন ছবি যোগ করুন
@@ -1014,7 +1289,7 @@ function App() {
         )}
 
         {/* Scenery Gallery */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {filteredScenery.map((item, index) => (
             <motion.div
               key={item.id}
@@ -1022,9 +1297,9 @@ function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="relative group bg-white rounded-2xl overflow-hidden shadow-lg"
+              className="relative group bg-white rounded-xl overflow-hidden shadow-lg"
             >
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative h-56 md:h-64 overflow-hidden">
                 <img 
                   src={item.url} 
                   alt={item.title}
@@ -1032,7 +1307,7 @@ function App() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <h3 className="text-xl font-bold mb-1">{item.title}</h3>
+                  <h3 className="text-lg md:text-xl font-bold mb-1">{item.title}</h3>
                   <p className="text-sm opacity-90">{item.description}</p>
                 </div>
               </div>
@@ -1043,6 +1318,7 @@ function App() {
                   <button
                     onClick={() => removeItem('scenery', item.id)}
                     className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                    style={{ cursor: 'pointer' }}
                   >
                     <X size={16} />
                   </button>
@@ -1094,7 +1370,7 @@ function App() {
 
   // Programs Section
   const ProgramsSection = () => (
-    <section id="programs" className="py-20">
+    <section id="programs" className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -1102,7 +1378,7 @@ function App() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">গ্রামের বিভিন্ন প্রোগ্রাম</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">গ্রামের বিভিন্ন প্রোগ্রাম</h2>
           <p className="text-gray-600">বছরজুড়ে আয়োজিত বিভিন্ন সামাজিক, সাংস্কৃতিক ও ধর্মীয় কার্যক্রম</p>
         </motion.div>
 
@@ -1112,6 +1388,7 @@ function App() {
             <button
               onClick={() => addNewItem('programs')}
               className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+              style={{ cursor: 'pointer' }}
             >
               <Plus size={20} />
               নতুন প্রোগ্রাম যোগ করুন
@@ -1120,14 +1397,14 @@ function App() {
         )}
 
         {/* Programs Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {guataData.programs.map((program, index) => (
             <motion.div
               key={program.id}
               initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-white rounded-2xl overflow-hidden shadow-xl"
+              className="bg-white rounded-xl overflow-hidden shadow-xl"
             >
               <div className="md:flex">
                 <div className="md:w-2/5">
@@ -1137,7 +1414,7 @@ function App() {
                     className="w-full h-48 md:h-full object-cover"
                   />
                 </div>
-                <div className="md:w-3/5 p-6">
+                <div className="md:w-3/5 p-4 md:p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium mb-2">
@@ -1146,19 +1423,20 @@ function App() {
                         {program.type === 'agriculture' && 'কৃষি'}
                         {program.type === 'religious' && 'ধর্মীয়'}
                       </span>
-                      <h3 className="text-xl font-bold text-gray-800">{program.title}</h3>
+                      <h3 className="text-lg md:text-xl font-bold text-gray-800">{program.title}</h3>
                     </div>
                     {isEditing && (
                       <button
                         onClick={() => removeItem('programs', program.id)}
                         className="p-2 text-red-500 hover:text-red-600"
+                        style={{ cursor: 'pointer' }}
                       >
                         <X size={20} />
                       </button>
                     )}
                   </div>
                   
-                  <p className="text-gray-600 mb-4">{program.description}</p>
+                  <p className="text-gray-600 mb-4 text-sm md:text-base">{program.description}</p>
                   
                   <div className="flex items-center text-gray-500">
                     <Calendar className="w-4 h-4 mr-2" />
@@ -1219,7 +1497,7 @@ function App() {
 
   // Schools Section
   const SchoolsSection = () => (
-    <section id="schools" className="py-20 bg-gray-50">
+    <section id="schools" className="py-16 md:py-20">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -1227,7 +1505,7 @@ function App() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">গুয়াতা গ্রামের শিক্ষা প্রতিষ্ঠান</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">গুয়াতা গ্রামের শিক্ষা প্রতিষ্ঠান</h2>
           <p className="text-gray-600">গ্রামের প্রাথমিক ও মাধ্যমিক স্তরের শিক্ষা প্রতিষ্ঠানসমূহ</p>
         </motion.div>
 
@@ -1237,6 +1515,7 @@ function App() {
             <button
               onClick={() => addNewItem('schools')}
               className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors"
+              style={{ cursor: 'pointer' }}
             >
               <Plus size={20} />
               নতুন স্কুল যোগ করুন
@@ -1245,7 +1524,7 @@ function App() {
         )}
 
         {/* Schools Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {guataData.schools.map((school, index) => (
             <motion.div
               key={school.id}
@@ -1253,25 +1532,26 @@ function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-2xl overflow-hidden shadow-xl"
+              className="bg-white rounded-xl overflow-hidden shadow-xl"
             >
-              <div className="p-6">
+              <div className="p-4 md:p-6">
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex items-center">
                     <div className="p-3 bg-blue-100 rounded-xl mr-4">
-                      <School className="w-8 h-8 text-blue-600" />
+                      <School className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
                     </div>
                     <div>
                       <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium mb-2">
                         {school.type === 'primary' ? 'প্রাথমিক বিদ্যালয়' : 'উচ্চ বিদ্যালয়'}
                       </span>
-                      <h3 className="text-2xl font-bold text-gray-800">{school.name}</h3>
+                      <h3 className="text-xl md:text-2xl font-bold text-gray-800">{school.name}</h3>
                     </div>
                   </div>
                   {isEditing && (
                     <button
                       onClick={() => removeItem('schools', school.id)}
                       className="p-2 text-red-500 hover:text-red-600"
+                      style={{ cursor: 'pointer' }}
                     >
                       <X size={20} />
                     </button>
@@ -1279,17 +1559,17 @@ function App() {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="bg-gray-50 p-3 rounded-lg">
                     <p className="text-gray-600 text-sm">প্রতিষ্ঠাকাল</p>
                     <p className="font-bold text-lg">{school.established}</p>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="bg-gray-50 p-3 rounded-lg">
                     <p className="text-gray-600 text-sm">মোট শিক্ষার্থী</p>
                     <p className="font-bold text-lg">{school.students} জন</p>
                   </div>
                 </div>
 
-                <p className="text-gray-600 mb-6">{school.description}</p>
+                <p className="text-gray-600 mb-6 text-sm md:text-base">{school.description}</p>
                 <p className="text-gray-700 mb-2 flex items-center">
                   <MapPin className="w-4 h-4 mr-2" />
                   {school.address}
@@ -1382,7 +1662,7 @@ function App() {
 
   // Mosques Section
   const MosquesSection = () => (
-    <section id="mosques" className="py-20">
+    <section id="mosques" className="py-16 md:py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -1390,7 +1670,7 @@ function App() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">গুয়াতা গ্রামের মসজিদসমূহ</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">গুয়াতা গ্রামের মসজিদসমূহ</h2>
           <p className="text-gray-600">গ্রামের বিভিন্ন এলাকায় অবস্থিত মসজিদের তালিকা</p>
         </motion.div>
 
@@ -1400,6 +1680,7 @@ function App() {
             <button
               onClick={() => addNewItem('mosques')}
               className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors"
+              style={{ cursor: 'pointer' }}
             >
               <Plus size={20} />
               নতুন মসজিদ যোগ করুন
@@ -1408,7 +1689,7 @@ function App() {
         )}
 
         {/* Mosques Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {guataData.mosques.map((mosque, index) => (
             <motion.div
               key={mosque.id}
@@ -1416,7 +1697,7 @@ function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white rounded-2xl overflow-hidden shadow-xl"
+              className="bg-white rounded-xl overflow-hidden shadow-xl"
             >
               <div className="relative h-48">
                 <img 
@@ -1429,18 +1710,19 @@ function App() {
                   <button
                     onClick={() => removeItem('mosques', mosque.id)}
                     className="absolute top-4 right-4 p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                    style={{ cursor: 'pointer' }}
                   >
                     <X size={16} />
                   </button>
                 )}
               </div>
               
-              <div className="p-6">
+              <div className="p-4 md:p-6">
                 <div className="flex items-center mb-4">
                   <Building className="w-6 h-6 text-green-600 mr-3" />
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800">{mosque.name}</h3>
-                    <p className="text-gray-600">{mosque.area}</p>
+                    <h3 className="text-lg md:text-xl font-bold text-gray-800">{mosque.name}</h3>
+                    <p className="text-gray-600 text-sm">{mosque.area}</p>
                   </div>
                 </div>
 
@@ -1455,7 +1737,7 @@ function App() {
                   </div>
                 </div>
 
-                <p className="text-gray-600 mb-4">{mosque.description}</p>
+                <p className="text-gray-600 mb-4 text-sm md:text-base">{mosque.description}</p>
                 
                 <div className="flex items-center text-gray-700">
                   <Users className="w-4 h-4 mr-2" />
@@ -1528,7 +1810,7 @@ function App() {
 
   // Contact Section with Google Map
   const ContactSection = () => (
-    <section id="contact" className="py-20 bg-gray-50">
+    <section id="contact" className="py-16 md:py-20">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -1536,11 +1818,11 @@ function App() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">যোগাযোগ ও অবস্থান</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">যোগাযোগ ও অবস্থান</h2>
           <p className="text-gray-600">গুয়াতা গ্রামের অবস্থান ও যোগাযোগের তথ্য</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12">
           {/* Contact Information */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -1548,8 +1830,8 @@ function App() {
             viewport={{ once: true }}
             className="space-y-6"
           >
-            <div className="bg-white p-8 rounded-2xl shadow-lg">
-              <h3 className="text-2xl font-bold mb-6 text-gray-800">গ্রামের তথ্য</h3>
+            <div className="bg-white p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg">
+              <h3 className="text-xl md:text-2xl font-bold mb-6 text-gray-800">গ্রামের তথ্য</h3>
               
               <div className="space-y-4">
                 <div className="flex items-center p-4 bg-gray-50 rounded-lg">
@@ -1625,8 +1907,8 @@ function App() {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="bg-white p-1 rounded-2xl shadow-2xl">
-              <div className="h-[400px] rounded-xl overflow-hidden">
+            <div className="bg-white p-1 rounded-xl md:rounded-2xl shadow-2xl">
+              <div className="h-[300px] md:h-[400px] rounded-xl overflow-hidden">
                 <iframe 
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14501.570613069915!2d89.07321386451719!3d24.679025446620155!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fc683b1fa30b3b%3A0x5142b7119ae06b05!2sGuata!5e0!3m2!1sen!2sbd!4v1765913544070!5m2!1sen!2sbd"
                   width="100%"
@@ -1640,16 +1922,16 @@ function App() {
                 ></iframe>
               </div>
               
-              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white px-6 py-3 rounded-full shadow-lg">
-                <p className="font-semibold text-gray-800 flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-red-600" />
+              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg">
+                <p className="font-semibold text-gray-800 flex items-center gap-2 text-sm md:text-base">
+                  <MapPin className="w-4 h-4 md:w-5 md:h-5 text-red-600" />
                   গুয়াতা, নওগাঁ
                 </p>
               </div>
             </div>
 
             {/* Map Instructions */}
-            <div className="mt-6 bg-white p-6 rounded-2xl shadow">
+            <div className="mt-6 bg-white p-4 md:p-6 rounded-xl shadow">
               <h4 className="text-lg font-bold mb-4 text-gray-800">মানচিত্র নির্দেশনা</h4>
               <ul className="space-y-2 text-gray-600">
                 <li className="flex items-center">
@@ -1676,7 +1958,7 @@ function App() {
   const Footer = () => (
     <footer className="bg-gray-900 text-white py-12">
       <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center space-x-3 mb-4">
               <img 
@@ -1698,14 +1980,16 @@ function App() {
           <div>
             <h4 className="text-lg font-bold mb-6">দ্রুত লিংক</h4>
             <div className="space-y-3">
-              {['home', 'population', 'notable-persons', 'scenery', 'schools', 'mosques', 'contact'].map((item) => (
+              {['home', 'population', 'neighborhoods', 'notable-persons', 'scenery', 'schools', 'mosques', 'contact'].map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item)}
                   className="block text-gray-400 hover:text-white transition-colors text-left"
+                  style={{ cursor: 'pointer' }}
                 >
                   {item === 'home' && 'হোম'}
                   {item === 'population' && 'জনসংখ্যা'}
+                  {item === 'neighborhoods' && 'মোহল্লা'}
                   {item === 'notable-persons' && 'কৃতি সন্তান'}
                   {item === 'scenery' && 'সুন্দর দৃশ্য'}
                   {item === 'schools' && 'স্কুল'}
@@ -1739,7 +2023,9 @@ function App() {
               >
                 <Facebook size={24} />
               </a>
-              <button className="p-3 bg-gray-800 rounded-lg hover:bg-pink-600 transition-colors">
+              <button className="p-3 bg-gray-800 rounded-lg hover:bg-pink-600 transition-colors"
+                style={{ cursor: 'pointer' }}
+              >
                 <Instagram size={24} />
               </button>
             </div>
@@ -1763,6 +2049,7 @@ function App() {
       <Navbar />
       <HeroSection />
       <PopulationSection />
+      <NeighborhoodsSection />
       <NotablePersonsSection />
       <ScenerySection />
       <ProgramsSection />
